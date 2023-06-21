@@ -8,13 +8,14 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	
-  	'username' => 'root',
-  	'password' => '',
-  	'database' => 'shopnochura-super-shop',
+	// 	'username' => 'root',
+	// 	'password' => '',
+	// 	'database' => 'mother_v4',
 	
-// 	'username' => 'root',
-// 	'password' => '',
-// 	'database' => 'mother_v4',
+   'username' => 'dewbxcak_admin3',
+   'password' => ')&@)nVVDO$]_',
+   'database' => 'dewbxcak_showpnachurasupershop',
+	
 		
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
