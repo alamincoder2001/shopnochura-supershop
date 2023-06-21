@@ -412,7 +412,6 @@ $route['incomeSearch'] = 'Administrator/Account/income_search';
 $route['incomePrint'] = 'Administrator/Reports/income_print';
 
 $route['cashView'] = 'Administrator/Account/cash_view';
-$route['cashView'] = 'Administrator/Account/cash_view';
 $route['cashSearch'] = 'Administrator/Account/cash_view';
 $route['cash_ledger'] = 'Administrator/Account/cashLedger';
 $route['get_cash_ledger'] = 'Administrator/Account/getCashLedger';

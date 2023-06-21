@@ -233,7 +233,6 @@ const quotationInvoice = Vue.component('quotation-invoice', {
             printWindow.focus();
             await new Promise(resolve => setTimeout(resolve, 1000));
             printWindow.print();
-            await new Promise(resolve => setTimeout(resolve, 1000));
             printWindow.close();
         }
     }

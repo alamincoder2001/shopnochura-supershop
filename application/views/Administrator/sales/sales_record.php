@@ -67,6 +67,7 @@
 						<option value="employee">By Employee</option>
 						<option value="category">By Category</option>
 						<option value="quantity">By Quantity</option>
+						<option value="discount">By Discount</option>
 						<option value="user">By User</option>
 					</select>
 				</div>
@@ -81,9 +82,9 @@
 					<v-select v-bind:options="employees" v-model="selectedEmployee" label="Employee_Name"></v-select>
 				</div>
 
-				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'quantity' && products.length > 0 ? '' : 'none'}">
+				<div class="form-group" style="display:none;" v-bind:style="{display: (searchType == 'quantity' && products.length > 0) || searchType == 'discount' ? '' : 'none'}">
 					<label>Product</label>
-					<v-select v-bind:options="products" v-model="selectedProduct" label="display_text" @input="sales = []"></v-select>
+					<v-select v-bind:options="products" v-model="selectedProduct" label="display_text" @input="sales=[]"></v-select>
 				</div>
 
 				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'category' && categories.length > 0 ? '' : 'none'}">
@@ -240,13 +241,13 @@
 					<tfoot>
 						<tr style="font-weight:bold;">
 							<td colspan="5" style="text-align:right;">Total</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_SubTotalAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TaxAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalDiscountAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_Freight)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0) }}</td>
-							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_DueAmount)}, 0) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_SubTotalAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TaxAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalDiscountAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_Freight)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_DueAmount)}, 0).toFixed(2) }}</td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -258,7 +259,7 @@
 					style="display:none;" 
 					v-bind:style="{display: searchTypesForDetails.includes(searchType) ? '' : 'none'}"
 				>
-					<table class="record-table" v-if="selectedProduct != null">
+					<table class="record-table" v-if="searchType == 'quantity' && selectedProduct != null">
 						<thead>
 							<tr>
 								<th>Invoice No.</th>
@@ -286,8 +287,38 @@
 							</tr>
 						</tfoot>
 					</table>
+					<table class="record-table" v-if="searchType == 'discount' && selectedProduct != null">
+						<thead>
+							<tr>
+								<th>Invoice No.</th>
+								<th>Date</th>
+								<th>Customer Name</th>
+								<th>Product Name</th>
+								<th>Sales Rate</th>
+								<th>Discount</th>
+								<th>Discount Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="sale in sales">
+								<td>{{ sale.SaleMaster_InvoiceNo }}</td>
+								<td>{{ sale.SaleMaster_SaleDate }}</td>
+								<td>{{ sale.Customer_Name }}</td>
+								<td>{{ sale.Product_Name }}</td>
+								<td style="text-align:right;">{{ sale.SaleDetails_Rate }}</td>
+								<td style="text-align:right;">{{ sale.SaleDetails_Discount }}</td>
+								<td style="text-align:right;">{{ sale.Discount_amount }}</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr style="font-weight:bold;">
+								<td colspan="6" style="text-align:right;">Total Discount</td>
+								<td style="text-align:right;">{{ sales.reduce((prev, curr) => { return prev + parseFloat(curr.Discount_amount)}, 0).toFixed(2) }}</td>
+							</tr>
+						</tfoot>
+					</table>
 
-					<table class="record-table" v-if="selectedProduct == null">
+					<table class="record-table" v-if="searchType=='category' && selectedProduct == null">
 						<thead>
 							<tr>
 								<th>Product Id</th>
@@ -342,7 +373,7 @@
 				selectedCategory: null,
 				sales: [],
 				searchTypesForRecord: ['', 'user', 'customer', 'employee'],
-				searchTypesForDetails: ['quantity', 'category']
+				searchTypesForDetails: ['quantity', 'category', 'discount']
 			}
 		},
 		methods: {
@@ -361,7 +392,7 @@
 			},
 			onChangeSearchType(){
 				this.sales = [];
-				if(this.searchType == 'quantity'){
+				if(this.searchType == 'quantity' || this.searchType == 'discount'){
 					this.getProducts();
 				} 
 				else if(this.searchType == 'user'){
@@ -411,7 +442,7 @@
 					this.selectedEmployee = null;
 				}
 
-				if(this.searchType != 'quantity'){
+				if(this.searchType != 'discount' && this.searchType != 'quantity'){
 					this.selectedProduct = null;
 				}
 
@@ -447,11 +478,6 @@
 						this.sales = res.data.sales;
 					}
 				})
-				.catch(error => {
-					if(error.response){
-						alert(`${error.response.status}, ${error.response.statusText}`);
-					}
-				})
 			},
 			getSaleDetails(){
 				let filter = {
@@ -459,6 +485,9 @@
 					productId: this.selectedProduct == null || this.selectedProduct.Product_SlNo == '' ? '' : this.selectedProduct.Product_SlNo,
 					dateFrom: this.dateFrom,
 					dateTo: this.dateTo
+				}
+				if (this.searchType == 'discount') {
+					filter.discount = 'yes';
 				}
 
 				axios.post('/get_saledetails', filter)
@@ -487,11 +516,6 @@
 					}
 					this.sales = sales;
 				})
-				.catch(error => {
-					if(error.response){
-						alert(`${error.response.status}, ${error.response.statusText}`);
-					}
-				})
 			},
 			deleteSale(saleId){
 				let deleteConf = confirm('Are you sure?');
@@ -504,11 +528,6 @@
 					alert(r.message);
 					if(r.success){
 						this.getSalesRecord();
-					}
-				})
-				.catch(error => {
-					if(error.response){
-						alert(`${error.response.status}, ${error.response.statusText}`);
 					}
 				})
 			},
@@ -604,7 +623,6 @@
 				reportWindow.focus();
 				await new Promise(resolve => setTimeout(resolve, 1000));
 				reportWindow.print();
-				await new Promise(resolve => setTimeout(resolve, 1000));
 				reportWindow.close();
 			}
 		}

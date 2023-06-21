@@ -62,8 +62,7 @@ class Sales extends CI_Controller {
     }
 
     function SelectCatWiseSaleProduct(){
-        $data['ProCat'] = $this->input->post('ProCat');
-        
+        $data['ProCat'] = $this->input->post('ProCat');        
         $this->load->view('Administrator/sales/ajax_CatWiseProduct', $data);
     }
 
@@ -145,17 +144,20 @@ class Sales extends CI_Controller {
     
             foreach($data->cart as $cartProduct){
                 $saleDetails = array(
-                    'SaleMaster_IDNo' => $salesId,
-                    'Product_IDNo' => $cartProduct->productId,
+                    'SaleMaster_IDNo'           => $salesId,
+                    'Product_IDNo'              => $cartProduct->productId,
                     'SaleDetails_TotalQuantity' => $cartProduct->quantity,
-                    'Purchase_Rate' => $cartProduct->purchaseRate,
-                    'SaleDetails_Rate' => $cartProduct->salesRate,
-                    'SaleDetails_Tax' => $cartProduct->vat,
-                    'SaleDetails_TotalAmount' => $cartProduct->total,
-                    'Status' => 'a',
-                    'AddBy' => $this->session->userdata("FullName"),
-                    'AddTime' => date('Y-m-d H:i:s'),
-                    'SaleDetails_BranchId' => $this->session->userdata('BRANCHid')
+                    'Purchase_Rate'             => $cartProduct->purchaseRate,
+                    'SaleDetails_Rate'          => $cartProduct->salesRate,
+                    'SaleDetails_Tax'           => $cartProduct->vat,
+                    'SaleDetails_Discount'      => $cartProduct->discount,
+                    'Discount_amount'           => $cartProduct->discountAmount,
+                    'SaleDetails_TotalAmount'   => $cartProduct->total,
+                    'is_free'                   => $cartProduct->is_free,
+                    'Status'                    => 'a',
+                    'AddBy'                     => $this->session->userdata("FullName"),
+                    'AddTime'                   => date('Y-m-d H:i:s'),
+                    'SaleDetails_BranchId'      => $this->session->userdata('BRANCHid')
                 );
     
                 $this->db->insert('tbl_saledetails', $saleDetails);
@@ -168,15 +170,15 @@ class Sales extends CI_Controller {
                     and branch_id = ?
                 ", [$cartProduct->quantity, $cartProduct->productId, $this->session->userdata('BRANCHid')]);
             }
-            $currentDue = $data->sales->previousDue + ($data->sales->total - $data->sales->paid);
-            //Send sms
-            $customerInfo = $this->db->query("select * from tbl_customer where Customer_SlNo = ?", $customerId)->row();
-            $sendToName = $customerInfo->owner_name != '' ? $customerInfo->owner_name : $customerInfo->Customer_Name;
-            $currency = $this->session->userdata('Currency_Name');
+            // $currentDue = $data->sales->previousDue + ($data->sales->total - $data->sales->paid);
+            // //Send sms
+            // $customerInfo = $this->db->query("select * from tbl_customer where Customer_SlNo = ?", $customerId)->row();
+            // $sendToName = $customerInfo->owner_name != '' ? $customerInfo->owner_name : $customerInfo->Customer_Name;
+            // $currency = $this->session->userdata('Currency_Name');
 
-            $message = "Dear {$sendToName},\nYour bill is {$currency} {$data->sales->total}. Received {$currency} {$data->sales->paid} and current due is {$currency} {$currentDue} for invoice {$invoice}";
-            $recipient = $customerInfo->Customer_Mobile;
-            $this->sms->sendSms($recipient, $message);
+            // $message = "Dear {$sendToName},\nYour bill is {$currency} {$data->sales->total}. Received {$currency} {$data->sales->paid} and current due is {$currency} {$currentDue} for invoice {$invoice}";
+            // $recipient = $customerInfo->Customer_Mobile;
+            // $this->sms->sendSms($recipient, $message);
     
             $res = ['success'=>true, 'message'=>'Sales Success', 'salesId'=>$salesId];
 
@@ -211,6 +213,10 @@ class Sales extends CI_Controller {
 
         if(isset($data->categoryId) && $data->categoryId != ''){
             $clauses .= " and pc.ProductCategory_SlNo = '$data->categoryId'";
+        }
+
+        if(isset($data->discount) && $data->discount != ''){
+            $clauses .= " and sd.SaleDetails_Discount > 0";
         }
 
         if(isset($data->dateFrom) && $data->dateFrom != '' && isset($data->dateTo) && $data->dateTo != ''){
@@ -441,17 +447,20 @@ class Sales extends CI_Controller {
     
             foreach($data->cart as $cartProduct){
                 $saleDetails = array(
-                    'SaleMaster_IDNo' => $salesId,
-                    'Product_IDNo' => $cartProduct->productId,
+                    'SaleMaster_IDNo'           => $salesId,
+                    'Product_IDNo'              => $cartProduct->productId,
                     'SaleDetails_TotalQuantity' => $cartProduct->quantity,
-                    'Purchase_Rate' => $cartProduct->purchaseRate,
-                    'SaleDetails_Rate' => $cartProduct->salesRate,
-                    'SaleDetails_Tax' => $cartProduct->vat,
-                    'SaleDetails_TotalAmount' => $cartProduct->total,
-                    'Status' => 'a',
-                    'AddBy' => $this->session->userdata("FullName"),
-                    'AddTime' => date('Y-m-d H:i:s'),
-                    'SaleDetails_BranchId' => $this->session->userdata("BRANCHid")
+                    'Purchase_Rate'             => $cartProduct->purchaseRate,
+                    'SaleDetails_Rate'          => $cartProduct->salesRate,
+                    'SaleDetails_Tax'           => $cartProduct->vat,
+                    'SaleDetails_Discount'      => $cartProduct->discount,
+                    'Discount_amount'           => $cartProduct->discountAmount,
+                    'SaleDetails_TotalAmount'   => $cartProduct->total,
+                    'is_free'                   => $cartProduct->is_free,
+                    'Status'                    => 'a',
+                    'AddBy'                     => $this->session->userdata("FullName"),
+                    'AddTime'                   => date('Y-m-d H:i:s'),
+                    'SaleDetails_BranchId'      => $this->session->userdata("BRANCHid")
                 );
     
                 $this->db->insert('tbl_saledetails', $saleDetails);

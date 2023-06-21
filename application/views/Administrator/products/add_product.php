@@ -344,6 +344,8 @@
 						this.product[key] = 0;
 					}
 				})
+				this.selectedCategory = null
+				this.selectedUnit = null
 			}
 		}
 	})
