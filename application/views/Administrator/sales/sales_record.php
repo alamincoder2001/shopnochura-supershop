@@ -287,7 +287,65 @@
 							</tr>
 						</tfoot>
 					</table>
+					<table class="record-table" v-if="searchType == 'quantity' && selectedProduct == null">
+						<thead>
+							<tr>
+								<th>Invoice No.</th>
+								<th>Date</th>
+								<th>Customer Name</th>
+								<th>Product Name</th>
+								<th>Sales Rate</th>
+								<th>Quantity</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="sale in sales">
+								<td>{{ sale.SaleMaster_InvoiceNo }}</td>
+								<td>{{ sale.SaleMaster_SaleDate }}</td>
+								<td>{{ sale.Customer_Name }}</td>
+								<td>{{ sale.Product_Name }}</td>
+								<td style="text-align:right;">{{ sale.SaleDetails_Rate }}</td>
+								<td style="text-align:right;">{{ sale.SaleDetails_TotalQuantity }}</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr style="font-weight:bold;">
+								<td colspan="5" style="text-align:right;">Total Quantity</td>
+								<td style="text-align:right;">{{ sales.reduce((prev, curr) => { return prev + parseFloat(curr.SaleDetails_TotalQuantity)}, 0) }}</td>
+							</tr>
+						</tfoot>
+					</table>
 					<table class="record-table" v-if="searchType == 'discount' && selectedProduct != null">
+						<thead>
+							<tr>
+								<th>Invoice No.</th>
+								<th>Date</th>
+								<th>Customer Name</th>
+								<th>Product Name</th>
+								<th>Sales Rate</th>
+								<th>Discount</th>
+								<th>Discount Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="sale in sales">
+								<td>{{ sale.SaleMaster_InvoiceNo }}</td>
+								<td>{{ sale.SaleMaster_SaleDate }}</td>
+								<td>{{ sale.Customer_Name }}</td>
+								<td>{{ sale.Product_Name }}</td>
+								<td style="text-align:right;">{{ sale.SaleDetails_Rate }}</td>
+								<td style="text-align:right;">{{ sale.SaleDetails_Discount }}</td>
+								<td style="text-align:right;">{{ sale.Discount_amount }}</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr style="font-weight:bold;">
+								<td colspan="6" style="text-align:right;">Total Discount</td>
+								<td style="text-align:right;">{{ sales.reduce((prev, curr) => { return prev + parseFloat(curr.Discount_amount)}, 0).toFixed(2) }}</td>
+							</tr>
+						</tfoot>
+					</table>
+					<table class="record-table" v-if="searchType == 'discount' && selectedProduct == null">
 						<thead>
 							<tr>
 								<th>Invoice No.</th>
@@ -494,7 +552,7 @@
 				.then(res => {
 					let sales = res.data;
 
-					if(this.selectedProduct == null) {
+					if(this.searchType == 'category' && this.selectedProduct == null) {
 						sales = _.chain(sales)
 							.groupBy('ProductCategory_ID')
 							.map(sale => {

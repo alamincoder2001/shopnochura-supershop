@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $active_group = 'default';
 $query_builder = TRUE;
@@ -7,16 +7,16 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	
-	// 	'username' => 'root',
-	// 	'password' => '',
-	// 	'database' => 'mother_v4',
-	
-   'username' => 'dewbxcak_admin3',
-   'password' => ')&@)nVVDO$]_',
-   'database' => 'dewbxcak_showpnachurasupershop',
-	
-		
+
+	'username' => 'root',
+	'password' => '',
+	'database' => 'shopnochura-super-shop',
+
+	//    'username' => 'dewbxcak_admin3',
+	//    'password' => ')&@)nVVDO$]_',
+	//    'database' => 'dewbxcak_showpnachurasupershop',
+
+
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
