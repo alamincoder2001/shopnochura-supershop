@@ -160,10 +160,21 @@
 										<input type="number" id="salesRate" placeholder="Rate" step="0.01" class="form-control" v-model="selectedProduct.Product_SellingPrice" v-on:input="productTotal" />
 									</div>
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Quantity </label>
 									<div class="col-xs-9">
 										<input type="number" step="0.01" min="0" id="quantity" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.quantity" v-on:input="productTotal" autocomplete="off" required />
+									</div>
+								</div> -->
+
+								<div class="form-group">
+									<label class="col-xs-3 control-label no-padding-right"> Quantity </label>
+									<div class="col-xs-4">
+										<input type="number" step="0.01" id="quantity" min="0" placeholder="Qty" class="form-control" ref="quantity" v-model="selectedProduct.pcs" v-on:input="productTotal" autocomplete="off" />
+									</div>
+									<div class="col-xs-1" style="margin-top:3px;" v-html="selectedProduct.converted_name"></div>
+									<div class="col-xs-4">
+										<input type="number" class="form-control" min="0" v-model="selectedProduct.boxQty" v-on:input="productTotal">
 									</div>
 								</div>
 
@@ -464,10 +475,14 @@
 					display_text: 'Select Product',
 					Product_Name: '',
 					Unit_Name: '',
+					converted_name: 'PCS',
 					quantity: 0,
-					discount: 0,
-					Product_Purchase_Rate: 0.00,
+					boxQty: 0,
+					pcs: 0,
+					Product_Purchase_Rate: 0,
 					Product_SellingPrice: 0.00,
+					discount: 0,
+					discountAmount: 0.00,
 					vat: 0.00,
 					total: 0.00,
 					is_free: 'false'
@@ -534,6 +549,9 @@
 			},
 
 			productTotal() {
+				let boxQty = this.selectedProduct.boxQty ? this.selectedProduct.per_unit_convert * this.selectedProduct.boxQty : 0;
+				let pcsQty = this.selectedProduct.pcs ? this.selectedProduct.pcs : 0;
+				this.selectedProduct.quantity = parseFloat(boxQty) + parseFloat(pcsQty);
 				let total = (parseFloat(this.selectedProduct.quantity) * parseFloat(this.selectedProduct.Product_SellingPrice));
 				this.selectedProduct.discountAmount = parseFloat((total * parseFloat(this.selectedProduct.discount)) / 100).toFixed(2);
 				this.selectedProduct.total = parseFloat(total-parseFloat(this.selectedProduct.discountAmount)).toFixed(2);
@@ -634,6 +652,8 @@
 					discountAmount: this.selectedProduct.discountAmount,
 					vat: this.selectedProduct.vat,
 					quantity: this.selectedProduct.quantity,
+					boxQty: this.selectedProduct.boxQty,
+					pcs: this.selectedProduct.pcs,
 					total: this.selectedProduct.total,
 					purchaseRate: this.selectedProduct.Product_Purchase_Rate,
 					is_free: this.selectedProduct.is_free
@@ -680,7 +700,10 @@
 					display_text: 'Select Product',
 					Product_Name: '',
 					Unit_Name: '',
+					converted_name: 'PCS',
 					quantity: 0,
+					boxQty: 0,
+					pcs: 0,
 					Product_Purchase_Rate: 0,
 					Product_SellingPrice: 0.00,
 					discount: 0,

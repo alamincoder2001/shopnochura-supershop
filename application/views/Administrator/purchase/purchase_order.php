@@ -141,13 +141,23 @@
 
 								<div class="form-group">
 									<label class="col-xs-4 control-label no-padding-right"> Pur. Rate </label>
-									<div class="col-xs-4">
+									<div class="col-xs-8">
 										<input type="text" id="purchaseRate" name="purchaseRate" class="form-control" placeholder="Pur. Rate" v-model="selectedProduct.Product_Purchase_Rate" v-on:input="productTotal" required autocomplete="off"/>
 									</div>
 
-									<label class="col-xs-1 control-label no-padding"> Qty </label>
+									<!-- <label class="col-xs-1 control-label no-padding"> Qty </label>
 									<div class="col-xs-3 no-padding-left">
 										<input type="text" step="0.01" id="quantity" name="quantity" class="form-control" placeholder="Quantity" ref="quantity" v-model="selectedProduct.quantity" v-on:input="productTotal" required autocomplete="off"/>
+									</div> -->
+								</div>
+								<div class="form-group">
+									<label class="col-xs-4 control-label no-padding-right"> Quantity </label>
+									<div class="col-xs-3">
+										<input type="number" step="0.01" id="quantity" min="0" name="quantity" class="form-control" placeholder="Quantity" ref="quantity" v-model="selectedProduct.pcs" v-on:input="productTotal" />
+									</div>
+									<div class="col-xs-1" v-html="selectedProduct.converted_name" style="margin-top:3px;"></div>
+									<div class="col-xs-4">
+										<input type="number" class="form-control" min="0" v-model="selectedProduct.boxQty" v-on:input="productTotal">
 									</div>
 								</div>
 
@@ -418,7 +428,10 @@
 					display_text: 'Select Product',
 					Product_Name: '',
 					Unit_Name: '',
+					converted_name: 'PCS',
 					quantity: '',
+					boxQty: 0,
+					pcs: 0,
 					Product_Purchase_Rate: '',
 					Product_SellingPrice: 0.00,
 					total: ''
@@ -502,6 +515,10 @@
 				this.$refs.quantity.focus();
 			},
 			productTotal() {
+				let boxQty = this.selectedProduct.boxQty ? this.selectedProduct.per_unit_convert * this.selectedProduct.boxQty : 0;
+				let pcsQty = this.selectedProduct.pcs ? this.selectedProduct.pcs : 0;
+				this.selectedProduct.quantity = parseFloat(boxQty) + parseFloat(pcsQty);
+
 				this.selectedProduct.total = this.selectedProduct.quantity * this.selectedProduct.Product_Purchase_Rate;
 			},
 			addToCart() {
@@ -546,7 +563,10 @@
 					display_text: 'Select Product',
 					Product_Name: '',
 					Unit_Name: '',
+					converted_name: 'PCS',
 					quantity: '',
+					boxQty: 0,
+					pcs: 0,
 					Product_Purchase_Rate: '',
 					Product_SellingPrice: 0.00,
 					total: ''

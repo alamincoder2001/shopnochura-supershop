@@ -555,7 +555,9 @@ class Model_Table extends CI_Model{
                     (select (p.Product_Purchase_Rate * current_quantity)) as stock_value,
                     pc.ProductCategory_Name,
                     b.brand_name,
-                    u.Unit_Name
+                    u.Unit_Name,
+                    p.converted_name,
+                    p.per_unit_convert
                 from tbl_currentinventory ci
                 join tbl_product p on p.Product_SlNo = ci.product_id
                 left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID

@@ -88,6 +88,7 @@
 							<th>Product Id</th>
 							<th>Product Name</th>
 							<th>Category</th>
+							<th>Convert Current Quantity</th>
 							<th>Current Quantity</th>
 							<th>Rate</th>
 							<th>Stock Value</th>
@@ -98,14 +99,16 @@
 							<td>{{ product.Product_Code }}</td>
 							<td>{{ product.Product_Name }}</td>
 							<td>{{ product.ProductCategory_Name }}</td>
-							<td>{{ product.current_quantity }} {{ product.Unit_Name }}</td>
+							<td v-if="product.per_unit_convert > 0">{{ Math.trunc(product.current_quantity / product.per_unit_convert) }} {{ product.converted_name }} {{ (product.current_quantity % product.per_unit_convert) }} {{ product.Unit_Name }}</td>
+							<td v-else>---</td>
+							<td>{{product.current_quantity}} {{ product.Unit_Name }}</td>
 							<td>{{ product.Product_Purchase_Rate | decimal }}</td>
 							<td>{{ product.stock_value | decimal }}</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="5" style="text-align:right;">Total Stock Value</th>
+							<th colspan="6" style="text-align:right;">Total Stock Value</th>
 							<th>{{ totalStockValue | decimal }}</th>
 						</tr>
 					</tfoot>
@@ -120,6 +123,7 @@
 							<th>Product Id</th>
 							<th>Product Name</th>
 							<th>Category</th>
+							<th>Production Quantity</th>
 							<th>Purchased Quantity</th>
 							<th>Purchase Returned Quantity</th>
 							<th>Damaged Quantity</th>
@@ -127,6 +131,7 @@
 							<th>Sales Returned Quantity</th>
 							<th>Transferred In Quantity</th>
 							<th>Transferred Out Quantity</th>
+							<th>Convert Current Quantity</th>
 							<th>Current Quantity</th>
 							<th>Rate</th>
 							<th>Stock Value</th>
@@ -137,6 +142,7 @@
 							<td>{{ product.Product_Code }}</td>
 							<td>{{ product.Product_Name }}</td>
 							<td>{{ product.ProductCategory_Name }}</td>
+							<td>{{ product.production_quantity }}</td>
 							<td>{{ product.purchased_quantity }}</td>
 							<td>{{ product.purchase_returned_quantity }}</td>
 							<td>{{ product.damaged_quantity }}</td>
@@ -144,14 +150,16 @@
 							<td>{{ product.sales_returned_quantity }}</td>
 							<td>{{ product.transferred_to_quantity}}</td>
 							<td>{{ product.transferred_from_quantity}}</td>
-							<td>{{ product.current_quantity }} {{ product.Unit_Name }}</td>
+							<td v-if="product.per_unit_convert > 0">{{ Math.trunc(product.current_quantity / product.per_unit_convert) }} {{ product.converted_name }} {{ (product.current_quantity % product.per_unit_convert) }} {{ product.Unit_Name }}</td>
+							<td v-else>---</td>
+							<td>{{product.current_quantity}} {{ product.Unit_Name }}</td>
 							<td>{{ product.Product_Purchase_Rate | decimal }}</td>
 							<td>{{ product.stock_value | decimal }}</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="12" style="text-align:right;">Total Stock Value</th>
+							<th colspan="14" style="text-align:right;">Total Stock Value</th>
 							<th>{{ totalStockValue | decimal }}</th>
 						</tr>
 					</tfoot>
