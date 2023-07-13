@@ -181,11 +181,11 @@
 								<div class="form-group">
 									<label class="col-xs-3 control-label no-padding-right"> Discount</label>
 									<div class="col-xs-5" style="display: flex;">
-										<input type="number" step="1" min="0" id="discount" placeholder="Discount" class="form-control" ref="discount" v-model="selectedProduct.discount" v-on:input="productTotal" autocomplete="off" style="width: 80%;" />
+										<input type="number" step="0.01" min="0" id="discount" placeholder="Discount" class="form-control" ref="discount" v-model="selectedProduct.discount" v-on:input="productTotal" autocomplete="off" style="width: 80%;" />
 										<button type="button" style="width: 20%;padding: 2px 2px;height: 25px;border:0;">%</button>
 									</div>
 									<div class="col-xs-4 no-padding-left">
-										<input type="text" id="discountAmount" v-model="selectedProduct.discountAmount" placeholder="Amount" class="form-control" readonly />
+										<input type="text" id="discountAmount" v-model="selectedProduct.discountAmount" v-on:input="productTotal" placeholder="Amount" class="form-control" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -553,17 +553,17 @@
 				let pcsQty = this.selectedProduct.pcs ? this.selectedProduct.pcs : 0;
 				this.selectedProduct.quantity = parseFloat(boxQty) + parseFloat(pcsQty);
 				let total = (parseFloat(this.selectedProduct.quantity) * parseFloat(this.selectedProduct.Product_SellingPrice));
-				this.selectedProduct.discountAmount = parseFloat((total * parseFloat(this.selectedProduct.discount)) / 100).toFixed(2);
-				this.selectedProduct.total = parseFloat(total-parseFloat(this.selectedProduct.discountAmount)).toFixed(2);
+				if (event.target.id == 'discount') {
+					this.selectedProduct.discountAmount = parseFloat((total * parseFloat(this.selectedProduct.discount)) / 100).toFixed(2);
+				}
+				if (event.target.id == 'discountAmount') {
+					this.selectedProduct.discount = parseFloat((parseFloat(this.selectedProduct.discountAmount)*100) / total).toFixed(2);
+				}
+				this.selectedProduct.total = parseFloat(total-parseFloat(this.selectedProduct.discountAmount == undefined ? 0 : this.selectedProduct.discountAmount)).toFixed(2);
 
 				if (event.target.id == 'salesRate') {
 					setTimeout(() => {
 						document.querySelector('#quantity').focus();
-					}, 1000)
-				}
-				if (event.target.id == 'quantity') {
-					setTimeout(() => {
-						document.querySelector('#discount').focus();
 					}, 1000)
 				}
 			},
