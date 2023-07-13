@@ -552,14 +552,16 @@
 				let boxQty = this.selectedProduct.boxQty ? this.selectedProduct.per_unit_convert * this.selectedProduct.boxQty : 0;
 				let pcsQty = this.selectedProduct.pcs ? this.selectedProduct.pcs : 0;
 				this.selectedProduct.quantity = parseFloat(boxQty) + parseFloat(pcsQty);
-				let total = (parseFloat(this.selectedProduct.quantity) * parseFloat(this.selectedProduct.Product_SellingPrice));
+
 				if (event.target.id == 'discount') {
-					this.selectedProduct.discountAmount = parseFloat((total * parseFloat(this.selectedProduct.discount)) / 100).toFixed(2);
+					this.selectedProduct.discountAmount = parseFloat((parseFloat(this.selectedProduct.Product_SellingPrice) * parseFloat(this.selectedProduct.discount)) / 100).toFixed(2);
 				}
 				if (event.target.id == 'discountAmount') {
-					this.selectedProduct.discount = parseFloat((parseFloat(this.selectedProduct.discountAmount)*100) / total).toFixed(2);
+					this.selectedProduct.discount = parseFloat((parseFloat(this.selectedProduct.discountAmount)*100) / parseFloat(this.selectedProduct.Product_SellingPrice)).toFixed(2);
 				}
-				this.selectedProduct.total = parseFloat(total-parseFloat(this.selectedProduct.discountAmount == undefined ? 0 : this.selectedProduct.discountAmount)).toFixed(2);
+				let total = parseFloat(this.selectedProduct.quantity) * parseFloat(this.selectedProduct.Product_SellingPrice);
+				let discountTotal = this.selectedProduct.discountAmount == undefined ? 0 : parseFloat(this.selectedProduct.discountAmount) * this.selectedProduct.quantity;
+				this.selectedProduct.total = parseFloat(total - discountTotal).toFixed(2);
 
 				if (event.target.id == 'salesRate') {
 					setTimeout(() => {
