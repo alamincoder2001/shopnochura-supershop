@@ -185,7 +185,7 @@
 										<button type="button" style="width: 20%;padding: 2px 2px;height: 25px;border:0;">%</button>
 									</div>
 									<div class="col-xs-4 no-padding-left">
-										<input type="text" id="discountAmount" v-model="selectedProduct.discountAmount" v-on:input="productTotal" placeholder="Amount" class="form-control" />
+										<input type="text" id="discountAmount" v-model="selectedProduct.discountAmount" v-on:input="productTotal" placeholder="Amount" class="form-control" :readonly="selectedProduct.quantity == undefined || selectedProduct.quantity == 0 ? true : false"/>
 									</div>
 								</div>
 								<div class="form-group">
