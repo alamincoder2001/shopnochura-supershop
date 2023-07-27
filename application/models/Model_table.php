@@ -707,7 +707,9 @@ class Model_Table extends CI_Model{
             (select (billAmount + paidOutAmount) - (paidAmount + returnedAmount)) as dueAmount
             
             from tbl_customer c
-            where c.Customer_brunchid = '$branchId' $clauses
+            where c.Customer_brunchid = '$branchId' 
+            and c.Customer_Type !='G'
+            $clauses
         ")->result();
 
         return $dueResult;

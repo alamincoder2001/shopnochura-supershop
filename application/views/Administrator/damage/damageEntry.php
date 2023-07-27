@@ -45,9 +45,9 @@
             </div>
 
             <div class="form-group">
-                <label class="col-md-1 col-xs-4 control-label no-padding-right"> Supplier </label>
-                <div class="col-md-3 col-xs-8">
-                    <v-select :options="suppliers" v-model="selectedSupplier" label="display_name" placeholder="Select Supplier"></v-select>
+                <label class="col-md-2 col-xs-4 control-label"> Added By </label>
+                <div class="col-md-2 col-xs-8 no-padding-left">
+                    <input type="text" id="AddBy" class="form-control" v-model="damage.AddBy" readonly />
                 </div>
             </div>
 
@@ -79,7 +79,18 @@
                 <div class="widget-main">
 
                     <div class="row">
-                        <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label no-padding-right"> Supplier </label>
+                                <div class="col-xs-8">
+                                    <v-select v-bind:options="suppliers" v-model="selectedSupplier" label="display_name"></v-select>
+                                </div>
+                                <div class="col-xs-1" style="padding: 0;">
+                                    <a href="<?= base_url('product') ?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Product"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
                             <form v-on:submit.prevent="addToCart">
                                 <div class="form-group">
                                     <label class="col-xs-3 control-label no-padding-right"> Product </label>
@@ -119,47 +130,48 @@
                             </form>
 
                         </div>
-                        <div class="col-md-7 col-xs-12">
-                            <table class="table table-bordered" style="color:#000;margin-bottom: 5px;">
-                                <thead>
-                                    <tr class="">
-                                        <th style="width:10%;color:#000;">Sl</th>
-                                        <th style="width:35%;color:#000;">Product Name</th>
-                                        <th style="width:7%;color:#000;">Qty</th>
-                                        <th style="width:8%;color:#000;">Rate</th>
-                                        <th style="width:15%;color:#000;">Total</th>
-                                        <th style="width:10%;color:#000;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="display:none;" v-bind:style="{display: cart.length > 0 ? '' : 'none'}">
-                                    <tr v-for="(product, sl) in cart" :style="{background: product.is_free == 'true'?'#ffd17e':''}" :title="product.is_free == 'false'?'':'Free Product'">
-                                        <td>{{ sl + 1 }}</td>
-                                        <td>{{ product.productCode }} - {{ product.name }}</td>
-                                        <td>{{ product.quantity }}</td>
-                                        <td>{{ product.purchaseRate }}</td>
-                                        <td>{{ product.total }}</td>
-                                        <td><a href="" v-on:click.prevent="removeFromCart(sl)"><i class="fa fa-trash"></i></a></td>
-                                    </tr>
 
-                                    <tr>
-                                        <td colspan="6"></td>
-                                    </tr>
-
-                                    <tr style="font-weight: bold;">
-                                        <td colspan="3">Note</td>
-                                        <td colspan="3">Total</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td colspan="3"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="damage.note"></textarea></td>
-                                        <td colspan="3" style="padding-top: 15px;font-size:18px;">{{ damage.Total }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-12 col-xs-12 no-padding">
+            <table class="table table-bordered" style="color:#000;margin-bottom: 5px;">
+                <thead>
+                    <tr class="">
+                        <th style="width:10%;color:#000;">Sl</th>
+                        <th style="width:35%;color:#000;">Product Name</th>
+                        <th style="width:7%;color:#000;">Qty</th>
+                        <th style="width:8%;color:#000;">Rate</th>
+                        <th style="width:15%;color:#000;">Total</th>
+                        <th style="width:10%;color:#000;">Action</th>
+                    </tr>
+                </thead>
+                <tbody style="display:none;" v-bind:style="{display: cart.length > 0 ? '' : 'none'}">
+                    <tr v-for="(product, sl) in cart" :style="{background: product.is_free == 'true'?'#ffd17e':''}" :title="product.is_free == 'false'?'':'Free Product'">
+                        <td>{{ sl + 1 }}</td>
+                        <td>{{ product.productCode }} - {{ product.name }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>{{ product.purchaseRate }}</td>
+                        <td>{{ product.total }}</td>
+                        <td><a href="" v-on:click.prevent="removeFromCart(sl)"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="6"></td>
+                    </tr>
+
+                    <tr style="font-weight: bold;">
+                        <td colspan="3">Note</td>
+                        <td colspan="3">Total</td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="damage.note"></textarea></td>
+                        <td colspan="3" style="padding-top: 15px;font-size:18px;">{{ damage.Total }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
