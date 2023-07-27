@@ -273,7 +273,6 @@
                     Product_SellingPrice: 0.00,
                     vat: 0.00,
                     total: 0.00,
-                    is_free: 'false'
                 },
                 userType: '<?php echo $this->session->userdata("accountType"); ?>'
             }
