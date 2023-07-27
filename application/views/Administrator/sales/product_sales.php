@@ -321,7 +321,7 @@
 											<div class="form-group">
 												<label class="col-xs-12 control-label no-padding-right">Discount Persent</label>
 
-												<div class="col-xs-4">
+												<div class="col-xs-4 no-padding-right">
 													<input type="number" id="discountPercent" class="form-control" v-model="discountPercent" v-on:input="calculateTotal" />
 												</div>
 
@@ -341,6 +341,16 @@
 												<label class="col-xs-12 control-label no-padding-right">Transport Cost</label>
 												<div class="col-xs-12">
 													<input type="number" class="form-control" v-model="sales.transportCost" v-on:input="calculateTotal" />
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="form-group">
+												<label class="col-xs-12 control-label no-padding-right">Damage Amount</label>
+												<div class="col-xs-12">
+													<input type="number" min="0" step="0.01" class="form-control" v-model="sales.damageAmount" v-on:input="calculateTotal" />
 												</div>
 											</div>
 										</td>
@@ -442,6 +452,7 @@
 					transportCost: 0.00,
 					total: 0.00,
 					paid: 0.00,
+					damageAmount: 0.00,
 					previousDue: 0.00,
 					due: 0.00,
 					isService: '<?php echo $isService; ?>',
@@ -729,7 +740,7 @@
 				} else {
 					this.discountPercent = (parseFloat(this.sales.discount) / parseFloat(this.sales.subTotal) * 100).toFixed(2);
 				}
-				this.sales.total = ((parseFloat(this.sales.subTotal) + parseFloat(this.sales.vat) + parseFloat(this.sales.transportCost)) - parseFloat(this.sales.discount)).toFixed(2);
+				this.sales.total = ((parseFloat(this.sales.subTotal) + parseFloat(this.sales.vat) + parseFloat(this.sales.transportCost)) - (parseFloat(this.sales.discount) + parseFloat(this.sales.damageAmount))).toFixed(2);
 				if (this.selectedCustomer.Customer_Type == 'G') {
 					this.sales.paid = this.sales.total;
 					this.sales.due = 0;

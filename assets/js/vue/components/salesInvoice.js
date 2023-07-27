@@ -102,6 +102,10 @@ const salesInvoice = Vue.component("sales-invoice", {
                                 <td><strong>Discount:</strong></td>
                                 <td style="text-align:right">{{ sales.SaleMaster_TotalDiscountAmount }}</td>
                             </tr>
+                            <tr v-if="sales.SaleMaster_damageAmount > 0">
+                                <td><strong>Discount:</strong></td>
+                                <td style="text-align:right">{{ sales.SaleMaster_TotalDiscountAmount }}</td>
+                            </tr>
                             <tr>
                                 <td><strong>Transport Cost:</strong></td>
                                 <td style="text-align:right">{{ sales.SaleMaster_Freight }}</td>

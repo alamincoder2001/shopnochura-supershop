@@ -205,6 +205,7 @@
 							<th>Sub Total</th>
 							<th>VAT</th>
 							<th>Discount</th>
+							<th>Damage Amount</th>
 							<th>Transport Cost</th>
 							<th>Total</th>
 							<th>Paid</th>
@@ -223,6 +224,7 @@
 							<td style="text-align:right;">{{ sale.SaleMaster_SubTotalAmount }}</td>
 							<td style="text-align:right;">{{ sale.SaleMaster_TaxAmount }}</td>
 							<td style="text-align:right;">{{ sale.SaleMaster_TotalDiscountAmount }}</td>
+							<td style="text-align:right;">{{ sale.SaleMaster_damageAmount }}</td>
 							<td style="text-align:right;">{{ sale.SaleMaster_Freight }}</td>
 							<td style="text-align:right;">{{ sale.SaleMaster_TotalSaleAmount }}</td>
 							<td style="text-align:right;">{{ sale.SaleMaster_PaidAmount }}</td>
@@ -244,6 +246,7 @@
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_SubTotalAmount)}, 0).toFixed(2) }}</td>
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TaxAmount)}, 0).toFixed(2) }}</td>
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalDiscountAmount)}, 0).toFixed(2) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_damageAmount)}, 0).toFixed(2) }}</td>
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_Freight)}, 0).toFixed(2) }}</td>
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_TotalSaleAmount)}, 0).toFixed(2) }}</td>
 							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.SaleMaster_PaidAmount)}, 0).toFixed(2) }}</td>

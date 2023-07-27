@@ -117,25 +117,26 @@ class Sales extends CI_Controller {
             }
 
             $sales = array(
-                'SaleMaster_InvoiceNo' => $invoice,
-                'SalseCustomer_IDNo' => $customerId,
-                'employee_id' => $data->sales->employeeId,
-                'SaleMaster_SaleDate' => $data->sales->salesDate,
-                'SaleMaster_SaleType' => $data->sales->salesType,
-                'SaleMaster_TotalSaleAmount' => $data->sales->total,
+                'SaleMaster_InvoiceNo'           => $invoice,
+                'SalseCustomer_IDNo'             => $customerId,
+                'employee_id'                    => $data->sales->employeeId,
+                'SaleMaster_SaleDate'            => $data->sales->salesDate,
+                'SaleMaster_SaleType'            => $data->sales->salesType,
+                'SaleMaster_TotalSaleAmount'     => $data->sales->total,
                 'SaleMaster_TotalDiscountAmount' => $data->sales->discount,
-                'SaleMaster_TaxAmount' => $data->sales->vat,
-                'SaleMaster_Freight' => $data->sales->transportCost,
-                'SaleMaster_SubTotalAmount' => $data->sales->subTotal,
-                'SaleMaster_PaidAmount' => $data->sales->paid,
-                'SaleMaster_DueAmount' => $data->sales->due,
-                'SaleMaster_Previous_Due' => $data->sales->previousDue,
-                'SaleMaster_Description' => $data->sales->note,
-                'Status' => 'a',
-                'is_service' => $data->sales->isService,
-                "AddBy" => $this->session->userdata("FullName"),
-                'AddTime' => date("Y-m-d H:i:s"),
-                'SaleMaster_branchid' => $this->session->userdata("BRANCHid")
+                'SaleMaster_TaxAmount'           => $data->sales->vat,
+                'SaleMaster_Freight'             => $data->sales->transportCost,
+                'SaleMaster_SubTotalAmount'      => $data->sales->subTotal,
+                'SaleMaster_damageAmount'        => $data->sales->damageAmount,
+                'SaleMaster_PaidAmount'          => $data->sales->paid,
+                'SaleMaster_DueAmount'           => $data->sales->due,
+                'SaleMaster_Previous_Due'        => $data->sales->previousDue,
+                'SaleMaster_Description'         => $data->sales->note,
+                'Status'                         => 'a',
+                'is_service'                     => $data->sales->isService,
+                "AddBy"                          => $this->session->userdata("FullName"),
+                'AddTime'                        => date("Y-m-d H:i:s"),
+                'SaleMaster_branchid'            => $this->session->userdata("BRANCHid")
             );
     
             $this->db->insert('tbl_salesmaster', $sales);
@@ -412,22 +413,23 @@ class Sales extends CI_Controller {
             }
 
             $sales = array(
-                'SalseCustomer_IDNo' => $customerId,
-                'employee_id' => $data->sales->employeeId,
-                'SaleMaster_SaleDate' => $data->sales->salesDate,
-                'SaleMaster_SaleType' => $data->sales->salesType,
-                'SaleMaster_TotalSaleAmount' => $data->sales->total,
+                'SalseCustomer_IDNo'             => $customerId,
+                'employee_id'                    => $data->sales->employeeId,
+                'SaleMaster_SaleDate'            => $data->sales->salesDate,
+                'SaleMaster_SaleType'            => $data->sales->salesType,
+                'SaleMaster_TotalSaleAmount'     => $data->sales->total,
                 'SaleMaster_TotalDiscountAmount' => $data->sales->discount,
-                'SaleMaster_TaxAmount' => $data->sales->vat,
-                'SaleMaster_Freight' => $data->sales->transportCost,
-                'SaleMaster_SubTotalAmount' => $data->sales->subTotal,
-                'SaleMaster_PaidAmount' => $data->sales->paid,
-                'SaleMaster_DueAmount' => $data->sales->due,
-                'SaleMaster_Previous_Due' => $data->sales->previousDue,
-                'SaleMaster_Description' => $data->sales->note,
-                "UpdateBy" => $this->session->userdata("FullName"),
-                'UpdateTime' => date("Y-m-d H:i:s"),
-                "SaleMaster_branchid" => $this->session->userdata("BRANCHid")
+                'SaleMaster_TaxAmount'           => $data->sales->vat,
+                'SaleMaster_Freight'             => $data->sales->transportCost,
+                'SaleMaster_SubTotalAmount'      => $data->sales->subTotal,
+                'SaleMaster_damageAmount'        => $data->sales->damageAmount,
+                'SaleMaster_PaidAmount'          => $data->sales->paid,
+                'SaleMaster_DueAmount'           => $data->sales->due,
+                'SaleMaster_Previous_Due'        => $data->sales->previousDue,
+                'SaleMaster_Description'         => $data->sales->note,
+                "UpdateBy"                       => $this->session->userdata("FullName"),
+                'UpdateTime'                     => date("Y-m-d H:i:s"),
+                "SaleMaster_branchid"            => $this->session->userdata("BRANCHid")
             );
     
             $this->db->where('SaleMaster_SlNo', $salesId);
