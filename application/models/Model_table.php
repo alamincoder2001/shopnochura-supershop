@@ -67,6 +67,19 @@ class Model_Table extends CI_Model{
         return $invoice;
     }
 
+    public function generateDamageInvoice(){
+        $invoice = date('Y') . "000001";
+        $year = date('Y');
+        $purchasedamage = $this->db->query("select * from tbl_purchasedamage pmd where pmd.Damage_invoiceNo like '$year%'");
+        if($purchasedamage->num_rows() != 0){
+            $newPurchaseDamageId = $purchasedamage->num_rows() + 1;
+            $zeros = array('0', '00', '000', '0000', '00000');
+            $invoice = date('Y') . (strlen($newPurchaseDamageId) > count($zeros) ? $newPurchaseDamageId : $zeros[count($zeros) - strlen($newPurchaseDamageId)] . $newPurchaseDamageId);
+        }
+
+        return $invoice;
+    }
+
     public function generateCustomerCode(){
         $customerCode = "C00001";
         
@@ -146,6 +159,18 @@ class Model_Table extends CI_Model{
     }
 
     public function generateDamageCode(){
+        $code = "D0001";
+        
+        $lastDamage = $this->db->query("select * from tbl_damage order by Damage_SlNo desc limit 1");
+        if($lastDamage->num_rows() != 0){
+            $newDamageCode = $lastDamage->row()->Damage_SlNo + 1;
+            $zeros = array('0', '00', '000');
+            $code = 'D' . (strlen($newDamageCode) > count($zeros) ? $newDamageCode : $zeros[count($zeros) - strlen($newDamageCode)] . $newDamageCode);
+        }
+
+        return $code;
+    }
+    public function generateSupplierDamageCode(){
         $code = "D0001";
         
         $lastDamage = $this->db->query("select * from tbl_damage order by Damage_SlNo desc limit 1");
@@ -547,7 +572,7 @@ class Model_Table extends CI_Model{
             select * from(
                 select
                     ci.*,
-                    (select (ci.purchase_quantity + ci.sales_return_quantity + ci.transfer_to_quantity) - (ci.sales_quantity + ci.purchase_return_quantity + ci.damage_quantity + ci.transfer_from_quantity)) as current_quantity,
+                    (select (ci.purchase_quantity + ci.sales_return_quantity + ci.transfer_to_quantity) - (ci.sales_quantity + ci.purchase_return_quantity + ci.damage_quantity + ci.transfer_from_quantity + ci.purchasedamage_quantity)) as current_quantity,
                     p.Product_Name,
                     p.Product_Code,
                     p.Product_ReOrederLevel,
@@ -591,6 +616,12 @@ class Model_Table extends CI_Model{
                 and pm.status = 'a'
             ) as bill,
 
+            (select (ifnull(sum(pdm.Damage_Total), 0.00)) from tbl_purchasedamage pdm
+                where pdm.supplierId = s.Supplier_SlNo
+                " . ($date == null ? "" : " and pdm.Damage_Date < '$date'") . "
+                and pdm.Status = 'a'
+            ) as purchaseDamage,
+
             (select ifnull(sum(pm2.PurchaseMaster_PaidAmount), 0.00) from tbl_purchasemaster pm2
                 where pm2.Supplier_SlNo = s.Supplier_SlNo
                 " . ($date == null ? "" : " and pm2.PurchaseMaster_OrderDate < '$date'") . "
@@ -619,7 +650,7 @@ class Model_Table extends CI_Model{
             
             (select invoicePaid + cashPaid) as paid,
             
-            (select (bill + cashReceived) - (paid + returned)) as due
+            (select (bill + cashReceived) - (paid + returned +purchaseDamage)) as due
 
             from tbl_supplier s
             where s.Supplier_brinchid = '$branchId' $clauses

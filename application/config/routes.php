@@ -554,5 +554,16 @@ $route['delete_investment_account'] = 'Administrator/Invest/deleteInvestmentAcco
 $route['get_investment_accounts'] = 'Administrator/Invest/getInvestmentAccounts';
 
 
+// supplier wise damage Entry
+$route['supplierwise_damage']                = 'Administrator/Damage/index';
+$route['supplierwise_damage/(:any)']         = 'Administrator/Damage/damageEdit/$1';
+$route['add_supplierwise_damage']            = 'Administrator/Damage/addDamage';
+$route['update_supplierwise_damage']         = 'Administrator/Damage/updateDamage';
+$route['supplierwise_damage_invoice/(:any)'] = 'Administrator/Damage/purchasedamageInvoicePrint/$1';
+$route['delete_supplierwise_damage']         = 'Administrator/Damage/deleteDamage';
+$route['get_supplierwise_damage']            = 'Administrator/Damage/getDamages';
+$route['supplierwise_damage_record']         = 'Administrator/Damage/damageRecord';
+
+
 //mother api content
 $route['get_mother_api_content'] = 'Administrator/Page/getMotherApiContent';

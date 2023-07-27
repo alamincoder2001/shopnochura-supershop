@@ -12,9 +12,9 @@ $db['default'] = array(
 	'password' => '',
 	'database' => 'shopnochura-super-shop',
 
-	//    'username' => 'dewbxcak_admin3',
-	//    'password' => ')&@)nVVDO$]_',
-	//    'database' => 'dewbxcak_showpnachurasupershop',
+	// 'username' => 'dewbxcak_admin3',
+	// 'password' => ')&@)nVVDO$]_',
+	// 'database' => 'dewbxcak_showpnachurasupershop',
 
 
 	'dbdriver' => 'mysqli',

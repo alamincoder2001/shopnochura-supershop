@@ -248,6 +248,15 @@ class Products extends CI_Controller {
                     and pd.Status = 'a'
                     " . (isset($data->date) && $data->date != null ? " and pm.PurchaseMaster_OrderDate <= '$data->date'" : "") . "
                 ) as purchased_quantity,
+
+                (select ifnull(sum(pdmd.Damage_Quantity), 0) 
+                    from tbl_purchasedamage_detail pdmd 
+                    join tbl_purchasedamage pdm on pdm.id = pdmd.Damage_Id
+                    where pdmd.Damage_ProductId = p.Product_SlNo
+                    and pdm.Branch_Id = '$branchId'
+                    and pdmd.Status = 'a'
+                    " . (isset($data->date) && $data->date != null ? " and pdm.Damage_Date <= '$data->date'" : "") . "
+                ) as purchasedamage_quantity,
                         
                 (select ifnull(sum(prd.PurchaseReturnDetails_ReturnQuantity), 0) 
                     from tbl_purchasereturndetails prd 
@@ -299,7 +308,7 @@ class Products extends CI_Controller {
                     " . (isset($data->date) && $data->date != null ? " and tm.transfer_date <= '$data->date'" : "") . "
                 ) as transferred_to_quantity,
                         
-                (select (purchased_quantity + sales_returned_quantity + transferred_to_quantity) - (sold_quantity + purchase_returned_quantity + damaged_quantity + transferred_from_quantity)) as current_quantity,
+                (select (purchased_quantity + sales_returned_quantity + transferred_to_quantity) - (sold_quantity + purchase_returned_quantity + damaged_quantity + transferred_from_quantity + purchasedamage_quantity)) as current_quantity,
                 (select p.Product_Purchase_Rate * current_quantity) as stock_value
             from tbl_product p
             left join tbl_productcategory pc on pc.ProductCategory_SlNo = p.ProductCategory_ID

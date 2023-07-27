@@ -4,7 +4,7 @@
         font-size: 14px;
     }
 
-    #userAccess h2{
+    #userAccess h2 {
         font-size: 16px;
         font-weight: bold;
         border-top: 1px solid #ccc;
@@ -108,6 +108,13 @@
                 </ul>
             </div>
             <div class="group">
+                <input type="checkbox" id="purchasedamage" class="group-head" @click="onClickGroupHeads"> <strong>Purchase Damage</strong>
+                <ul ref="purchasedamage">
+                    <li><input type="checkbox" class="access" value="supplierwise_damage" v-model="access"> Damage Entry</li>
+                    <li><input type="checkbox" class="access" value="supplierwise_damage_record" v-model="access"> Damage Record</li>
+                </ul>
+            </div>
+            <div class="group">
                 <input type="checkbox" id="hrPayroll" class="group-head" @click="onClickGroupHeads"> <strong>HR & Payroll</strong>
                 <ul ref="hrPayroll">
                     <li><input type="checkbox" class="access" value="salary_payment" v-model="access"> Salary Payment</li>
@@ -121,7 +128,7 @@
                     <li><input type="checkbox" class="access" value="salary_payment_report" v-model="access"> Salary Payment Report</li>
                 </ul>
             </div>
-            
+
             <div class="group">
                 <input type="checkbox" id="loan" class="group-head" @click="onClickGroupHeads"> <strong>Loan</strong>
                 <ul ref="loan">
@@ -132,7 +139,7 @@
                     <li><input type="checkbox" class="access" value="loan_accounts" v-model="access"> Loan Account</li>
                 </ul>
             </div>
-            
+
             <div class="group">
                 <input type="checkbox" id="investment" class="group-head" @click="onClickGroupHeads"> <strong>Investment</strong>
                 <ul ref="investment">
@@ -201,7 +208,7 @@
         el: '#userAccess',
         data() {
             return {
-                userId: parseInt('<?php echo $userId;?>'),
+                userId: parseInt('<?php echo $userId; ?>'),
                 access: []
             }
         },
@@ -213,23 +220,25 @@
                 })
             })
         },
-        async created(){
-            await axios.post('/get_user_access', {userId: this.userId}).then(res => {
+        async created() {
+            await axios.post('/get_user_access', {
+                userId: this.userId
+            }).then(res => {
                 let r = res.data;
-                if(r != ''){
+                if (r != '') {
                     this.access = JSON.parse(r);
                 }
             })
             this.makeChecked();
         },
         methods: {
-            makeChecked(){
+            makeChecked() {
                 groups = document.querySelectorAll('.group');
                 groups.forEach(group => {
                     let groupHead = group.querySelector('.group-head');
                     let accessCheckboxes = group.querySelectorAll('ul li input').length;
                     let checkedAccessCheckBoxes = group.querySelectorAll('ul li input:checked').length;
-                    if(accessCheckboxes == checkedAccessCheckBoxes){
+                    if (accessCheckboxes == checkedAccessCheckBoxes) {
                         groupHead.checked = true;
                     } else {
                         groupHead.checked = false;
@@ -240,7 +249,7 @@
                 let totalAccessCheckboxes = document.querySelectorAll('.access').length;
                 let totalCheckedAccessCheckBoxes = document.querySelectorAll('.access:checked').length;
 
-                if(totalAccessCheckboxes == totalCheckedAccessCheckBoxes){
+                if (totalAccessCheckboxes == totalCheckedAccessCheckBoxes) {
                     selectAllCheckbox.checked = true;
                 } else {
                     selectAllCheckbox.checked = false;
@@ -251,7 +260,7 @@
                 let ul = groupHead.parentNode.querySelector('ul');
                 let accessCheckboxes = ul.querySelectorAll('li input');
 
-                if(groupHead.checked){
+                if (groupHead.checked) {
                     accessCheckboxes.forEach(checkbox => {
                         this.access.push(checkbox.value);
                     })
@@ -265,8 +274,8 @@
                 await new Promise(r => setTimeout(r, 200));
                 this.makeChecked();
             },
-            async checkAll(){
-                if(event.target.checked){
+            async checkAll() {
+                if (event.target.checked) {
                     let accessCheckboxes = document.querySelectorAll('.access');
                     accessCheckboxes.forEach(checkbox => {
                         this.access.push(checkbox.value)
@@ -278,7 +287,7 @@
                 await new Promise(r => setTimeout(r, 200));
                 this.makeChecked();
             },
-            addUserAccess(){
+            addUserAccess() {
                 let data = {
                     userId: this.userId,
                     access: this.access

@@ -432,6 +432,22 @@ class Supplier extends CI_Controller {
             from tbl_purchasemaster pm
             where pm.Supplier_SlNo = '$data->supplierId'
             and pm.status = 'a'
+
+            UNION
+            select
+                'a' as sequence,
+                pdm.id as id,
+                pdm.Damage_Date as date,
+                concat('Purchase Damage - ', pdm.Damage_invoiceNo) as description,
+                0.00 as bill,
+                pdm.Damage_Total as paid,
+                0.00 as due,
+                0.00 as returned,
+                0.00 as cash_received,
+                0.00 as balance
+            from tbl_purchasedamage pdm
+            where pdm.supplierId = '$data->supplierId'
+            and pdm.Status = 'a'
             
             UNION
             select

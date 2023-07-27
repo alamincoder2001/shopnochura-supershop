@@ -54,6 +54,20 @@ if ($module == 'dashboard' or $module == '') { ?>
 					</div>
 				</div>
 
+				<!-- module/DamageModule -->
+				<!-- <div class="col-md-3 col-xs-6 section4">
+					<div class="col-md-12 section122" style="background-color:#A7ECFB;" onmouseover="this.style.background = '#85e6fa'" onmouseout="this.style.background = '#A7ECFB'">
+						<a href="<?php echo base_url(); ?>module/DamageModule">
+							<div class="logo">
+								<i class="fa fa-clipboard"></i>
+							</div>
+							<div class="textModule">
+								Damage Module
+							</div>
+						</a>
+					</div>
+				</div> -->
+
 				<!-- module/AccountsModule -->
 				<div class="col-md-3 col-xs-6 section4">
 					<div class="col-md-12 section122" style="background-color:#A7ECFB;" onmouseover="this.style.background = '#85e6fa'" onmouseout="this.style.background = '#A7ECFB'">
@@ -347,9 +361,9 @@ if ($module == 'dashboard' or $module == '') { ?>
 						</div>
 					</div>
 				<?php endif; ?>
-				
-				
-				<?php if($this->session->userdata('BRANCHid') == 1 && (isset($CheckSuperAdmin) || isset($CheckAdmin))) : ?>
+
+
+				<?php if ($this->session->userdata('BRANCHid') == 1 && (isset($CheckSuperAdmin) || isset($CheckAdmin))) : ?>
 					<div class="col-md-2 col-xs-6 ">
 						<div class="col-md-12 section20">
 							<a href="<?php echo base_url(); ?>companyProfile">
@@ -782,6 +796,50 @@ if ($module == 'dashboard' or $module == '') { ?>
 								</div>
 								<div class="textModule">
 									Re-Order List
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+
+			<!-- PAGE CONTENT ENDS -->
+		</div><!-- /.col -->
+	</div><!-- /.row -->
+
+<?php } elseif ($module == 'DamageModule') { ?>
+	<div class="row">
+		<div class="col-md-12 col-xs-12">
+			<!-- PAGE CONTENT BEGINS -->
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<!-- Header Logo -->
+				<div class="col-md-12 header">
+					<h3> Damage Module </h3>
+				</div>
+				<?php if (array_search("supplierwise_damage", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2 col-xs-6 ">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>supplierwise_damage">
+								<div class="logo">
+									<i class="menu-icon fa fa-plus"></i>
+								</div>
+								<div class="textModule">
+									Damage Entry
+								</div>
+							</a>
+						</div>
+					</div>
+				<?php endif; ?>
+				<?php if (array_search("supplierwise_damage_record", $access) > -1 || isset($CheckSuperAdmin) || isset($CheckAdmin)) : ?>
+					<div class="col-md-2 col-xs-6 ">
+						<div class="col-md-12 section20">
+							<a href="<?php echo base_url(); ?>supplierwise_damage_record">
+								<div class="logo">
+									<i class="menu-icon fa fa-file"></i>
+								</div>
+								<div class="textModule">
+									Damage Entry
 								</div>
 							</a>
 						</div>

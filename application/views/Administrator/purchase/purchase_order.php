@@ -152,11 +152,11 @@
 								</div>
 								<div class="form-group">
 									<label class="col-xs-4 control-label no-padding-right"> Quantity </label>
-									<div class="col-xs-3">
+									<div class="col-xs-3 no-padding-right">
 										<input type="number" step="0.01" id="quantity" min="0" name="quantity" class="form-control" placeholder="Quantity" ref="quantity" v-model="selectedProduct.pcs" v-on:input="productTotal" />
 									</div>
-									<div class="col-xs-1" v-html="selectedProduct.converted_name" style="margin-top:3px;"></div>
-									<div class="col-xs-4">
+									<div class="col-xs-2" v-html="selectedProduct.converted_name" style="margin-top:3px;"></div>
+									<div class="col-xs-3 no-padding-left">
 										<input type="number" class="form-control" min="0" v-model="selectedProduct.boxQty" v-on:input="productTotal">
 									</div>
 								</div>
@@ -529,14 +529,19 @@
 				}
 
 				let product = {
-					productId: this.selectedProduct.Product_SlNo,
-					name: this.selectedProduct.Product_Name,
-					categoryId: this.selectedProduct.ProductCategory_ID,
+					productId   : this.selectedProduct.Product_SlNo,
+					name        : this.selectedProduct.Product_Name,
+					categoryId  : this.selectedProduct.ProductCategory_ID,
 					categoryName: this.selectedProduct.ProductCategory_Name,
 					purchaseRate: this.selectedProduct.Product_Purchase_Rate,
-					salesRate: this.selectedProduct.Product_SellingPrice,
-					quantity: this.selectedProduct.quantity,
-					total: this.selectedProduct.total
+					salesRate   : this.selectedProduct.Product_SellingPrice,
+					quantity    : this.selectedProduct.quantity,
+					total       : this.selectedProduct.total
+				}
+
+				if(parseFloat(product.quantity) == 0){
+					alert("Product qty is empty");
+					return;
 				}
 
 				this.cart.push(product);

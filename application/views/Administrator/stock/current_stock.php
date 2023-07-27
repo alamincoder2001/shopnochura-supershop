@@ -123,8 +123,8 @@
 							<th>Product Id</th>
 							<th>Product Name</th>
 							<th>Category</th>
-							<th>Production Quantity</th>
 							<th>Purchased Quantity</th>
+							<th>Purchase Damage Quantity</th>
 							<th>Purchase Returned Quantity</th>
 							<th>Damaged Quantity</th>
 							<th>Sold Quantity</th>
@@ -142,8 +142,8 @@
 							<td>{{ product.Product_Code }}</td>
 							<td>{{ product.Product_Name }}</td>
 							<td>{{ product.ProductCategory_Name }}</td>
-							<td>{{ product.production_quantity }}</td>
 							<td>{{ product.purchased_quantity }}</td>
+							<td>{{ product.purchasedamage_quantity }}</td>
 							<td>{{ product.purchase_returned_quantity }}</td>
 							<td>{{ product.damaged_quantity }}</td>
 							<td>{{ product.sold_quantity }}</td>
