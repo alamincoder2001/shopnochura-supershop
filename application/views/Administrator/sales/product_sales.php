@@ -581,10 +581,20 @@
 				}
 			},
 			freeProductChange(){
-				this.selectedProduct.Product_SellingPrice = 0.00;
-				this.selectedProduct.total = 0.00;
-				this.selectedProduct.discount = 0;
-				this.selectedProduct.discountAmount = 0;
+				if (event.target.checked) {
+					if (this.selectedProduct != null || this.selectedProduct.Product_SlNo != '') {
+						localStorage.setItem('sale_rate', this.selectedProduct.Product_SellingPrice)
+					}
+					this.selectedProduct.Product_SellingPrice = 0.00;
+					this.selectedProduct.total = 0.00;
+					this.selectedProduct.discount = 0;
+					this.selectedProduct.discountAmount = 0;
+				}else{
+					this.selectedProduct.boxQty = 0;
+					this.selectedProduct.pcs = 0;
+					this.selectedProduct.quantity = 0;
+					this.selectedProduct.Product_SellingPrice = localStorage.getItem('sale_rate');
+				}
 			},
 			onSalesTypeChange() {
 				this.selectedCustomer = {
